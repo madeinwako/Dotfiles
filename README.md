@@ -5,6 +5,12 @@ coming soon!!
 coming soon!!
 
 #zsh config
-coming soon!!
+.zshrc
+
+#tmux config 
+
+#vim config
 
 
+#KeyRemap Setting
+private.xml
