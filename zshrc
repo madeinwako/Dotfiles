@@ -11,7 +11,22 @@
 
 ## **** Fundamental setting/基本設定 **** ##
 export LANG=ja_JP.UTF-8
+#PATH settings
 
+#macvim
+export PATH="/Applications/MacVim.app/Contents/MacOS/:$PATH"
+export PATH="/usr/local/share/npm/bin:$PATH"
+export PATH=/usr/local/bin:$PATH
+export PATH="~/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+
+#Color settings
+export LSCOLORS=exfxcxdxbxegedabagacad
+export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
+
+alias ls="ls -GF"
+alias gls="gls --color"
+zstyle ':completion:*' list-colors 'di=34' 'ln=35' 'so=32' 'ex=31' 'bd=46;34' 'cd=43;34'
 ## **** Complimentarity function/補完機能 **** ##
 
 #Basic complimentrity/補完機能を有効にする
@@ -23,7 +38,6 @@ compinit
 HISTFILE=~/.zsh_history
 HISTSIZE=6000000
 SAVEHIST=6000000
-setopt hist_ignore_dups     # ignore duplication command history list
 setopt share_history        # share command history data
 
 # /コマンド履歴検索
@@ -33,19 +47,51 @@ zle -N history-beginning-search-forward-end history-search-end
 bindkey "^P" history-beginning-search-backward-end
 bindkey "^N" history-beginning-search-forward-end
 
+# ヒストリに追加されるコマンド行が古いものと同じなら古いものを削除
+setopt hist_ignore_all_dups
+
+# スペースで始まるコマンド行はヒストリリストから削除
+setopt hist_ignore_space
+
+# ヒストリを呼び出してから実行する間に一旦編集可能
+setopt hist_verify
+
+# 余分な空白は詰めて記録
+setopt hist_reduce_blanks  
+
+# 古いコマンドと同じものは無視 
+setopt hist_save_no_dups
+
+# historyコマンドは履歴に登録しない
+setopt hist_no_store
+
+# 補完時にヒストリを自動的に展開         
+setopt hist_expand
+
+# 履歴をインクリメンタルに追加
+setopt inc_append_history
+
+# インクリメンタルからの検索
+bindkey "^R" history-incremental-search-backward
+bindkey "^S" history-incremental-search-forward
+
 ## **** Keybiding/キーバインド **** ##
 
 #Keybinding/キーバインドをvi風にする
 bindkey -v
-#vi mode の表示
+#keybindの追加。
+bindkey "^A" beginning-of-line
+bindkey "^E" end-of-line
 
+#vi mode の[insert] of [normal]の表示
 function zle-line-init zle-keymap-select {
 
 local max_path_chars=30
 local user_char='➤'
 local root_char='❯❯❯'
 local success_color='%F{071}'
-local failure_color='%F{124}'
+#local failure_color='%F{124}'
+local failure_color='%F{red}'
 local vcs_info_color='%F{242}'
 
 case $KEYMAP in
